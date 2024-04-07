@@ -1,6 +1,7 @@
 import 'package:ecomm/model/product_model.dart';
-import 'package:ecomm/view/product/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:ecomm/view/cart/cart.dart';
+import 'package:ecomm/view/product/product_details.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -13,7 +14,6 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          // Navigate to the product details page
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -24,7 +24,6 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
@@ -34,40 +33,44 @@ class ProductCard extends StatelessWidget {
                 width: double.infinity,
               ),
             ),
-            // Product Details
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Text(
+                product.name ?? '',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Rs: ${product.price ?? ''}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name ?? '',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartPage(),
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    product.description ?? '',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    product.price ?? '',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+                  );
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                ),
+                child: const Text('Add to Cart'),
               ),
             ),
           ],
