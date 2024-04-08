@@ -21,15 +21,22 @@ class ProductScreen extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             return SingleChildScrollView(
-              child: Wrap(
-                spacing: 8.0,
-                runSpacing: 8.0,
-                children: snapshot.data!.map((product) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width / 2 - 12.0,
-                    child: ProductCard(product: product),
-                  );
-                }).toList(),
+              child: Column(
+                children: [
+                  for (int i = 0; i < snapshot.data!.length; i += 2)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ProductCard(product: snapshot.data![i]),
+                        ),
+                        const SizedBox(width: 8), // Adjust spacing between cards
+                        if (i + 1 < snapshot.data!.length)
+                          Expanded(
+                            child: ProductCard(product: snapshot.data![i + 1]),
+                          ),
+                      ],
+                    ),
+                ],
               ),
             );
           }

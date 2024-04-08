@@ -27,7 +27,7 @@ class ProductController {
     rethrow; // Rethrow the error to be handled by the caller
   }
 }
-static const String baseUrl = "http://172.16.17.113:8000/api/products/";
+static const String baseUrl = "http://192.168.18.3:8000/api/products/";
 Future<Product> getProduct(int productId) async {
     var url = baseUrl + productId.toString();
 
