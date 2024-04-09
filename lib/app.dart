@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/products',
       routes: {
-        '/login': (context) => const LoginScreen(),
         '/products': (context) => const ProductScreen(),
+        '/login': (context) => const LoginScreen(),
+        
         '/register': (context) => const RegisterScreen(),
       },
     );

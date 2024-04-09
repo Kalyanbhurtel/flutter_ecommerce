@@ -1,11 +1,12 @@
-import 'package:ecomm/controller/register_controller';
+import 'package:ecomm/controller/register_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:ecomm/view/login/login_page.dart'; 
+import 'package:ecomm/view/login/login_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
@@ -114,29 +115,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   } else if (_role == 'wholesaler') {
                     // Implement registration for wholesaler
                   }
-                  if (success) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Registration Successful'),
-                          content: const Text('You have successfully registered.'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog
-                                Navigator.of(context).pushReplacement( // Navigate to login screen
-                                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                                );
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    // Show error message or handle failure
+                  
+                  if (mounted) { // Moved mounted check here
+                    if (success) {
+                      showDialog(
+                        // ignore: use_build_context_synchronously
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Registration Successful'),
+                            content: const Text('You have successfully registered.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                  );
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      // Show error message or handle failure
+                    }
                   }
                 },
                 child: const Text('Register'),

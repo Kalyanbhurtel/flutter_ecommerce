@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterController {
@@ -31,12 +32,16 @@ class RegisterController {
         return true;
       } else {
         // Registration failed
-        print('Failed to register consumer: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Failed to register consumer: ${response.statusCode}');
+        }
         return false;
       }
     } catch (e) {
       // Exception occurred
-      print('Exception during consumer registration: $e');
+      if (kDebugMode) {
+        print('Exception during consumer registration: $e');
+      }
       return false;
     }
   }
@@ -73,12 +78,16 @@ class RegisterController {
         return true;
       } else {
         // Registration failed
-        print('Failed to register wholesaler: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Failed to register wholesaler: ${response.statusCode}');
+        }
         return false;
       }
     } catch (e) {
       // Exception occurred
-      print('Exception during wholesaler registration: $e');
+      if (kDebugMode) {
+        print('Exception during wholesaler registration: $e');
+      }
       return false;
     }
   }

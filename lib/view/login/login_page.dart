@@ -1,10 +1,11 @@
-import 'package:ecomm/controller/login_controller';
-import 'package:ecomm/model/login_model.dart';
-import 'package:ecomm/view/product/product_screen.dart';
+import 'package:ecomm/view/login/AuthService/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ecomm/controller/login_controller.dart';
+import 'package:ecomm/view/product/product_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -15,30 +16,51 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
 
+  final AuthService _authService = AuthService();
+
   Future<void> _login() async {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text;
 
-    // Call the loginUser method from your LoginController
     final LoginController loginController = LoginController();
-    final LoginModel? loginModel = await loginController.loginUser(email, password);
+    final bool isLoggedIn = await loginController.loginUser(email, password);
 
-    if (loginModel != null) {
-      // If login is successful, navigate to the ProductScreen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ProductScreen()),
-      );
-    } else {
-      // If login fails, display an error message
-      setState(() {
-        _errorMessage = 'Login failed. Please check your credentials and try again.';
-      });
+    if (mounted) {
+      if (isLoggedIn) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(),
+          ),
+        );
+      } else {
+        setState(() {
+          _errorMessage =
+              'Login failed. Please check your credentials and try again.';
+        });
+      }
     }
   }
 
   void _navigateToRegister() {
     Navigator.pushNamed(context, '/register');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoggedIn();
+  }
+
+  Future<void> _checkLoggedIn() async {
+    if (await _authService.isLoggedIn()) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductScreen(),
+        ),
+      );
+    }
   }
 
   @override
@@ -53,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Your UI components
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
